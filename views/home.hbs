@@ -1,0 +1,59 @@
+<div class="container">
+  {{#if user}}
+    <h1 class="py-5">Welocme {{user.username}}</h1>
+  {{/if}}
+  {{!-- Hero Section --}}
+  <div class="d-sm-flex align-items-center justify-content-between w-100" style="height: 70vh;">
+    <div class="col-md-5 mx-auto mb-4 mb-sm-0 headline">
+      <span class="text-secondary text-uppercase">Welcome</span>
+      <h1 class="display-4 my-4 font-weight-bold">BookLand<br /> <span style="color: #9B5DE5;">For The Reader Inside You</span></h1>
+      <a href="#" class="btn px-5 py-3 text-white mt-3 mt-sm-0" style="border-radius: 30px; background-color: #9B5DE5;">Explore</a>
+    </div>
+    <div class="col-md-7 h-100" style="min-height: 350px; background-image: url('/images/hero-cover.jpeg'); background-position: center; background-size: contain;">
+    </div>
+  </div>
+  {{!-- Latest Books --}}
+  <div class="py-5">
+    <h2 class="font-weight-bold text-secondary">Latest</h2>
+    <div class="row py-4">
+    {{#each latestBooks}}
+      <div class="col-md-3 w-100" style="max-width: 300px;">
+        <div class="flex justify-content-center align-items-center">
+          <div style="width:150px;height:250px; margin:auto">
+            <img src="{{this.coverImage}}" style="width: 100%;height:80%" />
+          </div>
+        </div>
+        <div style="height: 160px;background-color:#D4DFE4;" class="w-100 py-2 px-3 flex flex-column">
+          <h5 style="height: 38px;" class="font-weight-bold">{{this.title}}</h5>
+          <h6 style="height: 40px" class="text-secondary font-weight-bolder py-2">{{this.author}}</h6>
+          <div class="flex justify-content-between pt-4">
+            <h5 class="text-secondary">${{this.price}}</h5>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+  </div>
+  {{!-- Most Popular Books --}}
+  <div class="py-5">
+    <h2 class="font-weight-bold text-secondary">Most Popular</h2>
+    <div class="row py-4">
+    {{#each mostPopularBooks}}
+      <div class="col-md-3 w-100" style="max-width: 300px;">
+        <div class="flex justify-content-center align-items-center">
+          <div style="width:150px;height:250px; margin:auto">
+            <img src="{{this.coverImage}}" style="width: 100%;height:80%" />
+          </div>
+        </div>
+        <div style="height: 160px;background-color:#D4DFE4;" class="w-100 py-2 px-3 flex flex-column">
+          <h5 style="height: 38px;overflow:hidden" class="font-weight-bold">{{this.title}}</h5>
+          <h6 style="height: 40px;overflow:hidden" class="text-secondary font-weight-bolder py-2">{{this.author}}</h6>
+          <div class="flex justify-content-between pt-4">
+            <h5 class="text-secondary">${{this.price}}</h5>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+  </div>
+</div>
