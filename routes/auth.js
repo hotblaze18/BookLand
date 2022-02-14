@@ -3,10 +3,11 @@ const router = express.Router();
 const passport = require("passport");
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const { Routes, Messages } = require("../constants");
 
 //signup page
 router.get('/signup', (req, res, next) => {
-  res.render('signup');
+  res.render('signup', { route: 'signup', message: req.flash("message") });
 });
 
 //signup post request
@@ -26,16 +27,29 @@ router.post('/signup', function(req, res, next) {
           }
           newUser.password = hash;
           try {
-            req.session.message = "Succesfully signed up! Please login to continue."
             const user = await newUser.save();
-            res.redirect('/login');
+            res.redirect(Routes.login);
           } catch(err) {
             console.log(err);
-            return res.render('/signup', { error: 'Problem signing up, please try again' })
+            if(err.code === 11000) {
+              if(err.keyPattern.email) {
+                req.flash("message", { type: Messages.emailAlreadyExists.type, message: Messages.emailAlreadyExists.message });
+              } else if(err.keyPattern.username) {
+                req.flash("message", { type: Messages.usernameAlreadyExists.type, message: Messages.usernameAlreadyExists.message });
+              }
+            } else {
+              req.flash("message", { type: Messages.error.type, message: Messages.error.message });
+            }
+            return res.redirect(Routes.signup);
           }
       });
   });
 });
+
+//login page
+router.get('/login', (req, res) => {
+  res.render('login', { route: 'login', message: req.flash("message") });
+})
 
 //to login user.
 router.post("/login", (req, res, next) => {
@@ -45,20 +59,21 @@ router.post("/login", (req, res, next) => {
         //if there was some error while verifying user
         if (err) {
             console.log(err);
-            return res.render('login', { message: "Failed to login. please try again." });
+            req.flash("message", { type: Messages.error.type, message: Messages.error.message });
+            return res.redirect(Routes.login);
         }
         //if the user provided incorrect username or password
         if (!user) {
-            console.log('user not there!');
-            return res.render('login', { message: "Incorrect username or password" });
+            req.flash("message", { type: Messages.incorrectEmailOrPassword.type, message: Messages.incorrectEmailOrPassword.message });
+            return res.redirect(Routes.login);
         }
-        console.log('here');
         //if correct user exists in database then use login method
         req.logIn(user, function(err) {
             if (err) {
-                return res.render('login', { errors: err });
+                req.flash("message", { type: Messages.error.type, message: Messages.error.message })
+                return res.redirect(Routes.login);
             }
-            req.session.message = "Successfully logged in " + user.username
+            req.flash('message', { type: Messages.loginSuccess.type, message: Messages.loginSuccess.message });
             return res.redirect('/');
         });
     })(req, res, next);
@@ -66,8 +81,8 @@ router.post("/login", (req, res, next) => {
 
 router.post('/logout', function(req, res) {
   req.logout();
-  req.session.message = "Successfully signed out!";
-  res.redirect('/login');
+  req.flash("message", { type: Messages.logout.type, message: Messages.logout.message })
+  res.redirect(Routes.login);
 });
 
 module.exports = router;

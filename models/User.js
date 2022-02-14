@@ -19,7 +19,8 @@ const ThirdPartyProviderSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema(
     {
         username: {
-            type: String
+            type: String,
+            unique: true
         },
         email: {
             type: String,
@@ -28,11 +29,6 @@ const UserSchema = new mongoose.Schema(
         },
         password: {
             type: String
-        },
-        role: {
-          type: String,
-          enum: ['user', 'admin'],
-          required: true
         },
         third_party_auth: [ThirdPartyProviderSchema],
     },

@@ -21,19 +21,21 @@ passport.use(new LocalStrategy({ usernameField: "email" }, async function verify
   //find user by email
   try {
     const user = await User.findOne({ email });
-    console.log(user);
+    
+    //if user does not exists
+    if(!user) {
+      return cb(null, false);
+    }
+
     //check if users password is valid or not.
     const validPassword = await bcrypt.compare(password ,user.password);
     //if password is valid pass user to callback
     if(validPassword) {
-      cb(null, user);
-    } else {
-      //else pass appropriate message
-      cb(null, false, { message: "Invalid Username or Password" });
+      return cb(null, user);
     }
   } catch(err) {
     //if there was some other error pass that in error
-    cb(err, null, { message: err });
+    cb(err, null);
   }
 }))
 

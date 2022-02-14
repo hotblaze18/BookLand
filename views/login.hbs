@@ -5,6 +5,7 @@
         <img src="/images/book-pile.svg" class="img-fluid" style="width:450px;height:auto" alt="Phone image">
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+        <h2 class="display-4 mb-5">Login</h2>
         <form action="/auth/login" method="POST">
           <!-- Email input -->
           <div class="form-outline mb-4">
@@ -18,8 +19,10 @@
             <label class="form-label">Password</label>
           </div>
 
+          <div class="text-secondary display-5 mb-3">Don't have an account? <a class="" href="/auth/signup">Sign up</a></div>
+
           <!-- Submit button -->
-          <input type="submit" class="btn btn-primary btn-lg btn-block">Sign in</input>
+          <input type="submit" value="Sign In" class="btn btn-primary btn-lg btn-block">
 
           {{!-- <div class="divider d-flex align-items-center my-4">
             <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
