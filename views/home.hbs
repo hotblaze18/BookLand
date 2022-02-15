@@ -12,44 +12,22 @@
     <div class="col-md-7 h-100" style="min-height: 350px; background-image: url('/images/hero-cover.jpeg'); background-position: center; background-size: contain;">
     </div>
   </div>
-  {{!-- Latest Books --}}
+  {{!-- Recomended Books --}}
   <div class="py-5">
-    <h2 class="font-weight-bold text-secondary">Latest</h2>
+    <h2 class="font-weight-bold text-secondary">Recomended</h2>
     <div class="row py-4">
     {{#each latestBooks}}
-      <div class="col-md-3 w-100" style="max-width: 300px;">
+      <div class="col col-sm-6 col-md-3 w-100 my-4" style="max-width: 300px;">
         <div class="flex justify-content-center align-items-center">
           <div style="width:150px;height:250px; margin:auto">
-            <img src="{{this.coverImage}}" style="width: 100%;height:80%" />
-          </div>
-        </div>
-        <div style="height: 160px;background-color:#D4DFE4;" class="w-100 py-2 px-3 flex flex-column">
-          <h5 style="height: 38px;" class="font-weight-bold">{{this.title}}</h5>
-          <h6 style="height: 40px" class="text-secondary font-weight-bolder py-2">{{this.author}}</h6>
-          <div class="flex justify-content-between pt-4">
-            <h5 class="text-secondary">${{this.price}}</h5>
-          </div>
-        </div>
-      </div>
-    {{/each}}
-  </div>
-  </div>
-  {{!-- Most Popular Books --}}
-  <div class="py-5">
-    <h2 class="font-weight-bold text-secondary">Most Popular</h2>
-    <div class="row py-4">
-    {{#each mostPopularBooks}}
-      <div class="col-md-3 w-100" style="max-width: 300px;">
-        <div class="flex justify-content-center align-items-center">
-          <div style="width:150px;height:250px; margin:auto">
-            <img src="{{this.coverImage}}" style="width: 100%;height:80%" />
+            <img src="{{this.image}}" style="width: 100%;height:80%" />
           </div>
         </div>
         <div style="height: 160px;background-color:#D4DFE4;" class="w-100 py-2 px-3 flex flex-column">
           <h5 style="height: 38px;overflow:hidden" class="font-weight-bold">{{this.title}}</h5>
-          <h6 style="height: 40px;overflow:hidden" class="text-secondary font-weight-bolder py-2">{{this.author}}</h6>
+          <h6 style="height: 40px;overflow:hidden" class="text-secondary font-weight-bolder py-2">{{this.authors}}</h6>
           <div class="flex justify-content-between pt-4">
-            <h5 class="text-secondary">${{this.price}}</h5>
+            <h5 class="text-secondary">{{this.pageCount}} pages</h5>
           </div>
         </div>
       </div>

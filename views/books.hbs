@@ -1,0 +1,20 @@
+<div class="container py-5">
+  <div class="row">
+    {{#each books}}
+      <div class="col col-sm-6 col-md-3 w-100 my-4" style="max-width: 300px;">
+        <div class="flex justify-content-center align-items-center">
+          <div style="width:150px;height:250px; margin:auto">
+            <img src="{{this.image}}" style="width: 100%;height:80%" />
+          </div>
+        </div>
+        <div style="height: 160px;background-color:#D4DFE4;" class="w-100 py-2 px-3 flex flex-column">
+          <h5 style="height: 38px;overflow:hidden" class="font-weight-bold">{{this.title}}</h5>
+          <h6 style="height: 40px;overflow:hidden" class="text-secondary font-weight-bolder py-2">{{this.authors}}</h6>
+          <div class="flex justify-content-between pt-4">
+            <h5 class="text-secondary">{{this.pageCount}} pages</h5>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>

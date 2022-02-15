@@ -13,7 +13,10 @@ const session = require("express-session");
 const flash = require('req-flash');
 const MongoStore = require("connect-mongo")(session);
 const passport = require("./passport/setup");
-const auth = require("./routes/auth");
+const auth = require("./routes/auth");;
+const book = require('./routes/book');
+const { default: axios } = require('axios');
+const { getBooks, getRecomendedBooks } = require('./api');
 
 //setup view engine
 app.engine('hbs', hbs({
@@ -81,17 +84,15 @@ mongoose.connect('mongodb+srv://bookland:bookland@cluster0.vwbxz.mongodb.net/myF
 
 //routes
 app.use("/auth", auth);
+app.use('/books', book);
 
 app.get('/', async (req, res) => {
   console.log(req.session.message, req.isAuthenticated());
-  //fetch all the books
-  // const allBooks = await Book.find();
+  
+  const latestBooks = await getRecomendedBooks();
+  console.log(latestBooks);
 
-  // //dummy data for most popular and latest books
-  // const mostPopularBooks = allBooks.slice(26, 30);
-  // const latestBooks = allBooks.slice(100, 104);
-
-  res.render('home', { latestBooks: [], mostPopularBooks: [], user: req.user, message: req.flash('message')  });
+  res.render('home', { latestBooks, user: req.user, message: req.flash('message')  });
 });
 
 module.exports = app;

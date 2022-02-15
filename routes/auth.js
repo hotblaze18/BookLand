@@ -27,7 +27,8 @@ router.post('/signup', function(req, res, next) {
           }
           newUser.password = hash;
           try {
-            const user = await newUser.save();
+            await newUser.save();
+            req.flash("message", { type: Messages.signupSuccess.type, message: Messages.signupSuccess.message });
             res.redirect(Routes.login);
           } catch(err) {
             console.log(err);
@@ -79,7 +80,7 @@ router.post("/login", (req, res, next) => {
     })(req, res, next);
 });
 
-router.post('/logout', function(req, res) {
+router.get('/logout', function(req, res) {
   req.logout();
   req.flash("message", { type: Messages.logout.type, message: Messages.logout.message })
   res.redirect(Routes.login);
