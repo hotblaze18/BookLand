@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-const { Routes, Messages } = require("../constants");
+const { Routes, Messages, Roles } = require("../constants");
 
 //signup page
 router.get('/signup', (req, res, next) => {
@@ -75,7 +75,11 @@ router.post("/login", (req, res, next) => {
                 return res.redirect(Routes.login);
             }
             req.flash('message', { type: Messages.loginSuccess.type, message: Messages.loginSuccess.message });
-            return res.redirect('/');
+            if(user.role === Roles.ADMIN) {
+              res.redirect(Routes.admin);
+            } else {
+              res.redirect('/');
+            }
         });
     })(req, res, next);
 });

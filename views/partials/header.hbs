@@ -5,12 +5,17 @@
     <div style="justify-content: space-between;" class="collapse navbar-collapse" id="navbarColor02">      
         <form id="searchForm" class="form-inline my-2 my-lg-0 ml-3"> <input name="search" style="width: 300px;" class="form-control mr-sm-2" type="text" placeholder="Search by title, author, publisher"> <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> </form>
         <div class="d-flex align-items-center">
-          <a class="btn bnt-link mr-2">
-            <i class="fa fa-2x fa-mobile text-info" aria-hidden="true"></i>
-          </a>
-          <a class="btn bnt-link mr-2">
-            <i style="font-size: 23px" class="fa fa-heart text-info" aria-hidden="true"></i>
-          </a>
+          {{#if (eq user.role "admin")}}
+            <a href="/admin/inventory" class="btn btn-link text-white mr-2">Inventory</a>
+            <a href="/books/add" class="btn btn-link text-white mr-2">Add Book</a>
+          {{else}}
+            <a class="btn bnt-link mr-2">
+              <i class="fa fa-2x fa-mobile text-info" aria-hidden="true"></i>
+            </a>
+            <a class="btn bnt-link mr-2">
+              <i style="font-size: 23px" class="fa fa-heart text-info" aria-hidden="true"></i>
+            </a>
+          {{/if}}
           <a href="/auth/logout" class="btn bnt-link">
             <i class="fa fa-2x fa-sign-out text-info" aria-hidden="true"></i>
           </a>

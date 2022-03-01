@@ -28,7 +28,11 @@ const UserSchema = new mongoose.Schema(
             unique: true
         },
         password: {
-            type: String
+            type: String,
+            required: true
+        },
+        role: {
+          type: String,
         },
         third_party_auth: [ThirdPartyProviderSchema],
     },

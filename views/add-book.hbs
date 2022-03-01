@@ -1,0 +1,53 @@
+<section class="py-5 container">
+  <form action="/books/add" method="POST" enctype="multipart/form-data">
+
+    <div class="form-outline mb-4">
+      <input type="text" name="isbn" class="form-control form-control-lg" required/>
+      <label class="form-label">Isbn (must be unique)</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="text" name="title" class="form-control form-control-lg" required/>
+      <label class="form-label">Title</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="text" name="authors" class="form-control form-control-lg" required/>
+      <label class="form-label">Authors</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="number" min="0" step="0.01" name="price" class="form-control form-control-lg" required/>
+      <label class="form-label">Price</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="text" name="publisher" class="form-control form-control-lg" required/>
+      <label class="form-label">Publisher</label>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" class="form-control" id="description" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="coverImage">Example file input</label>
+      <input name="coverImage" type="file" class="form-control-file" id="coverImage" required>
+    </div>
+
+    <!-- Submit button -->
+    <input type="submit" value="Add" class="btn btn-primary btn-lg btn-block">
+
+    {{!-- <div class="divider d-flex align-items-center my-4">
+      <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+    </div> --}}
+
+    {{!-- <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="#!" role="button">
+      <i class="fab fa-facebook-f me-2"></i>Continue with Facebook
+    </a>
+    <a class="btn btn-primary btn-lg btn-block" style="background-color: #55acee" href="#!" role="button">
+      <i class="fab fa-twitter me-2"></i>Continue with Twitter</a> --}}
+
+  </form>
+</section>

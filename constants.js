@@ -1,7 +1,10 @@
 module.exports.Routes = {
   home: '/home',
   login: '/auth/login',
-  signup: '/auth/signup'
+  signup: '/auth/signup',
+  admin: '/admin',
+  inventory: '/admin/inventory',
+  addbook: '/books/add',
 }
 
 module.exports.Messages = {
@@ -29,8 +32,21 @@ module.exports.Messages = {
     type: 'success',
     message: 'Successfully logged out'
   },
+  addBookSuccess: {
+    type: 'success',
+    message: 'Successfully added book'
+  },
+  removeBookSuccess: {
+    type: 'success',
+    message: 'Sucessfully removed book'
+  },
   error: {
     type: "error",
     message: "There was a problem. Please try again."
   }
+}
+
+module.exports.Roles = {
+  USER: 'user',
+  ADMIN: 'admin'
 }

@@ -22,16 +22,16 @@
 {{> header}}
 <body>
   {{#if message}}
-    <div class="alert alert-primary my-3">{{message.message}}</div>
+    <div style="max-width: 70%;" class="alert alert-primary my-3 mx-auto">{{message.message}}</div>
   {{/if}}  
     {{{ body }}}
 </body>
 {{> footer}}
-<script>
+{{!-- <script>
   const user = "{{user}}";
   const route = "{{route}}"
   if(!user && route !== 'signup' && route !== 'login') {
     window.location.href = '/auth/signup'
-  }
-</script>
+  } 
+</script> --}}
 </html>

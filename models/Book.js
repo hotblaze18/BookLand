@@ -54,7 +54,7 @@ const bookSchema = new mongoose.Schema({
   genres: {
     type: [String]
   }
-})
+}, { timestamps: true })
 
 const Book = mongoose.model('Book', bookSchema);
 

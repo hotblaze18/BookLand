@@ -15,15 +15,30 @@ const MongoStore = require("connect-mongo")(session);
 const passport = require("./passport/setup");
 const auth = require("./routes/auth");;
 const book = require('./routes/book');
-const { default: axios } = require('axios');
-const { getBooks, getRecomendedBooks } = require('./api');
+const admin = require('./routes/admin');
+const { getRecomendedBooks } = require('./api');
+const hbshelpers = require('handlebars-helpers');
+const redirectIfNotLoggedIn = require('./middleware/redirectIfNotLogged');
+const checkIfAdmin = require('./middleware/checkIfAdmin');
+const { Routes } = require('./constants');
+const Book = require('./models/Book');
+const multihelpers = hbshelpers(['object', 'string']);
+const helpers = {
+  eq: function(a, b, options){
+    if (a === b) {
+      return true;
+      }
+    return false;
+  },
+}
 
 //setup view engine
 app.engine('hbs', hbs({
   extname: 'hbs', 
   defaultLayout: 'layout', 
   layoutsDir: __dirname + '/views/layouts/',
-  handlebars: allowInsecurePrototypeAccess(Handlebars) 
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
+  helpers: {...multihelpers, ...helpers }, 
 }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -32,8 +47,10 @@ app.set('view engine', 'hbs');
 app.use(express.json());
 app.use(bodyParser());
 app.use(cookieParser());
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors())
+app.use('/uploads', express.static('uploads'));
 
 //Set up Express Session
 app.use(
@@ -74,7 +91,7 @@ mongoose.connect('mongodb+srv://bookland:bookland@cluster0.vwbxz.mongodb.net/myF
   }
 ).then(async () => {
   console.log('connected to db');
-  /** To insert initial 2000 books in database (execute only once) **/
+  // /** To insert initial 2000 books in database (execute only once) **/
   // const books = require('./books.json');
   // await Book.insertMany(books);
   // console.log('inserted');  
@@ -84,15 +101,25 @@ mongoose.connect('mongodb+srv://bookland:bookland@cluster0.vwbxz.mongodb.net/myF
 
 //routes
 app.use("/auth", auth);
-app.use('/books', book);
+app.use('/books', redirectIfNotLoggedIn, book);
+app.use('/admin', redirectIfNotLoggedIn, checkIfAdmin, admin);
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
+  const user = req.user;
+  if(user && user.role === 'admin') {
+    res.redirect(Routes.admin);
+  } else {
+    res.redirect(Routes.home);
+  }
+})
+
+app.get('/home', redirectIfNotLoggedIn,  async (req, res) => {
   console.log(req.session.message, req.isAuthenticated());
   
   const latestBooks = await getRecomendedBooks();
   console.log(latestBooks);
 
   res.render('home', { latestBooks, user: req.user, message: req.flash('message')  });
-});
+}); 
 
 module.exports = app;
