@@ -93,7 +93,12 @@ mongoose.connect('mongodb+srv://bookland:bookland@cluster0.vwbxz.mongodb.net/myF
   console.log('connected to db');
   // /** To insert initial 2000 books in database (execute only once) **/
   // const books = require('./books.json');
-  // await Book.insertMany(books);
+  // let toInsert = books.map((book) => {
+  //   let pages = book.pages ? parseInt(book.pages) : 300;
+  //   return { ...book, pages };
+  // })
+  // console.log(toInsert[0]);
+  // await Book.insertMany(toInsert);
   // console.log('inserted');  
 }).catch((err) => {
   console.log('db connection failed with ', err);

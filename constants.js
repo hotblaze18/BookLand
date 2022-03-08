@@ -5,6 +5,7 @@ module.exports.Routes = {
   admin: '/admin',
   inventory: '/admin/inventory',
   addbook: '/books/add',
+  wishlist: '/wishlist'
 }
 
 module.exports.Messages = {
@@ -39,6 +40,14 @@ module.exports.Messages = {
   removeBookSuccess: {
     type: 'success',
     message: 'Sucessfully removed book'
+  },
+  addWishlistSuccess: {
+    type: 'success',
+    message: 'Succesfully added to wishlist'
+  },
+  removeFromWishlistSuccess: {
+    type: 'success',
+    message: 'Succesfully removed from wishlist'
   },
   error: {
     type: "error",

@@ -18,7 +18,7 @@ function buildResponse(response) {
   }));
 }
 
-function buildDatabaseResponse(books) {
+module.exports.buildDatabaseResponse = (books) => {
   // console.log(books[0]);
   return books.map((book) => ({
     id: book._id,

@@ -3,7 +3,49 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
     {{#if user}}
     <div style="justify-content: space-between;" class="collapse navbar-collapse" id="navbarColor02">      
-        <form id="searchForm" class="form-inline my-2 my-lg-0 ml-3"> <input name="search" style="width: 300px;" class="form-control mr-sm-2" type="text" placeholder="Search by title, author, publisher"> <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> </form>
+        <form method="GET" action="/books" id="searchForm" class="d-flex align-items-center form-inline my-2 my-lg-0 ml-3"> 
+          <input name="search" style="width: 300px;" class="form-control mr-sm-2" type="text" placeholder="Search by title, author, publisher, description"> 
+          <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> 
+        <div style="cursor: pointer;position:relative" class="ml-3">
+          <i id="filterIcon" class="fa fa-2x fa-filter text-info" aria-hidden="true"></i>
+          <div id="filter" class="d-none" style="width: 300px;position:absolute;top:110%;left:0;background:rgb(224, 220, 220);padding:20px;border-radius:8px;z-index: 10">
+            <div class="form-group">
+              <label for="sel1">Price:</label>
+              <select name="priceFilter" id="priceFilter" class="form-control" id="sel1">
+                <option>Any</option>
+                <option>0$-10$</option>
+                <option>10$-20$</option>
+                <option>20$-30$</option>
+                <option>30$-above</option>
+              </select>
+            </div>
+            <div class="form-group mt-3">
+              <label for="sel1">Pages:</label>
+              <select name="pageFilter" id="pageFilter" class="form-control" id="sel1">
+                <option>Any</option>
+                <option>0-100</option>
+                <option>100-200</option>
+                <option>200-300</option>
+                <option>300-500</option>
+                <option>500-800</option>
+                <option>800-above</option>
+              </select>
+            </div>
+            <div class="form-group mt-3">
+              <label for="sel1">Language:</label>
+              <select name="language" id="languageFilter" class="form-control" id="sel1">
+                <option>Any</option>
+                <option>English</option>
+                <option>Arabic</option>
+                <option>French</option>
+                <option>Spanish</option>
+                <option>German</option>
+                <option>Russian</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        </form>
         <div class="d-flex align-items-center">
           {{#if (eq user.role "admin")}}
             <a href="/admin/inventory" class="btn btn-link text-white mr-2">Inventory</a>
@@ -29,12 +71,20 @@
     {{/if}}
 </nav>
 <script>
-  const searchForm = document.getElementById("searchForm");
-  if(searchForm) {
-    searchForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const searchQuery = e.target.search.value;
-    window.location.href = `/books?q=${searchQuery}`;
+
+  const filterElement = document.getElementById("filter");
+  const filterIcon = document.getElementById("filterIcon");
+  filterIcon.addEventListener('click', () => {
+    if(filterElement.classList.contains('d-none')) {
+      filterElement.classList.remove('d-none');
+    } else {
+      filterElement.classList.add('d-none');
+    }
   })
-  }
+
+  {{!-- const pageFilter = document.getElementById("pageFilter");
+  const priceFilter = document.getElementById("priceFilter");
+  const languageFilter = document.getElementById("languageFilter");
+
+  console.log(pageFilter.value); --}}
 </script>
