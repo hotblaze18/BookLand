@@ -8,9 +8,9 @@ const Book = require("../models/Book");
 const { Routes, Messages } = require("../constants");
 const path = require('path');
 const { query } = require("express");
+const { isInWishlistIds } = require("../util");
 
 router.get('/', async (req, res) => {
-  console.log(req.query);
   const { search, priceFilter, pageFilter, language } = req.query;
   let q = {};
   if(priceFilter !== 'Any') {
@@ -56,7 +56,13 @@ router.get('/', async (req, res) => {
   } else {
     books = await Book.find(q); 
   }
-  res.render('books', { user: req.user, books: buildDatabaseResponse(books), message: req.flash("message") });
+  books = buildDatabaseResponse(books);
+  books.forEach((book) => {
+    if(isInWishlistIds(req.user, book.id)) {
+      book.inWishlist = true;
+    }
+  })
+  res.render('books', { user: req.user, books, message: req.flash("message") });
 });
 
 router.get('/add', checkIfAdmin, (req, res) => {
@@ -64,30 +70,63 @@ router.get('/add', checkIfAdmin, (req, res) => {
 })
 
 router.post('/add', checkIfAdmin, upload.single('coverImage'), async (req, res) => {
-  const { isbn, title, price, authors, publisher, publishDate, description } = req.body
+  const { isbn, title, price, authors, pages, language, publisher, publishDate, description, genres } = req.body
   const coverImage = `/uploads/${req.file.originalname}`;
-  const book = new Book({ isbn, title, price, author: authors, publisher, publishDate, description, coverImage });
+  const book = new Book({ isbn, title, price, author: authors, pages, genres: genres.split(','), publisher, publishDate, language, description, coverImage });
   book.save().then(() => {
     req.flash('message', Messages.addBookSuccess);
     res.redirect(Routes.inventory);
   }).catch((err) => {
     req.flash("message", { type: "Error", message: "Book Validation failed" });
     res.redirect(Routes.addbook);
-  })
+  });
 });
 
-router.get('/update/:id', async (req, res) => {
+router.get('/update/:id', checkIfAdmin,  async (req, res) => {
   const { id } = req.params;
   console.log(id);
-  const book = await Book.findById(id);
+  let book = await Book.findById(id);
   if(book) {
-    console.log(book);
-    res.render('update-book', { user: req.user, book, message: req.flash('message') });
+    const genres = book.genres.join(',');
+    console.log(genres);
+    let publishDate = "2007-05-12"
+    if(book.publishDate) {
+      const date = new Date(book.publishDate);
+      const month = date.getMonth();
+      const din = date.getDate();
+      publishDate = `${date.getFullYear()}-${month < 10 ? '0'+month : month}-${din < 10 ? '0'+din : din}`;
+    }
+    console.log(publishDate);
+    res.render('update-book', { user: req.user, book: buildDatabaseResponse([book]), language: book.language, genres, publishDate, message: req.flash('message') });
   } else {
     req.flash("message", { type: "Error", message: "Invalid Book Id" });
     res.redirect(Routes.inventory);
   }
 })
+
+router.post('/update', checkIfAdmin, upload.single('coverImage'), async (req, res) => {
+  
+  const { id, isbn, title, price, authors, pages, language, publisher, publishDate, description, genres } = req.body;
+  const coverImage = req.file ? `/uploads/${req.file.originalname}` : '';
+  
+  let book = {}
+  
+  if(coverImage) {
+    book = { title, price, author: authors, pages, genres: genres.split(','), publisher, publishDate, language, description, coverImage };
+  } else {
+    book = {isbn, title, price, author: authors, pages, genres: genres.split(','), publisher, publishDate, language, description };
+  }
+
+  try {
+    await Book.findByIdAndUpdate(id, book);
+    req.flash("message", { type: "success", message: "Succesfully updated book" });
+    res.redirect(Routes.inventory);
+  } catch(err) {
+    console.error(err);
+    req.flash("message", { type: "error", message: "Problem in updating book." });
+    res.redirect(Routes.updateBook);
+  }
+});
 
 router.post('/remove', checkIfAdmin, (req, res) => {
   const { id } = req.body;

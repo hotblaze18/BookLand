@@ -5,6 +5,7 @@ module.exports.Routes = {
   admin: '/admin',
   inventory: '/admin/inventory',
   addbook: '/books/add',
+  updateBook: '/books/update',
   wishlist: '/wishlist'
 }
 

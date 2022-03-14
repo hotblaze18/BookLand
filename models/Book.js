@@ -4,20 +4,20 @@ const bookSchema = new mongoose.Schema({
   isbn: {
     type: String,
     required: true,
-    //unique: true
+    unique: true
   },
   title: {
     type: String,
-    //required: true
+    required: true
   },
   price: {
     type: Number,
-    //required: true,
+    required: true,
     min: 0
   },
   author: {
     type: String,
-    //required: true
+    required: true
   },
   publisher: {
     type: String,
@@ -49,7 +49,6 @@ const bookSchema = new mongoose.Schema({
   },
   pages: {
     type: Number,
-    default: '200'
   },
   genres: {
     type: [String]

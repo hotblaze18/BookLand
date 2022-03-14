@@ -17,6 +17,10 @@
     {{!-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
+    {{!-- tagin --}}
+    <link rel="stylesheet" href="https://unpkg.com/tagin@2.0.2/dist/tagin.min.css">
+    
+    {{!-- Custom css --}}
     <link rel="stylesheet" href="/styles/global.css">
 </head>
 {{> header}}
@@ -27,11 +31,20 @@
     {{{ body }}}
 </body>
 {{> footer}}
-{{!-- <script>
-  const user = "{{user}}";
-  const route = "{{route}}"
-  if(!user && route !== 'signup' && route !== 'login') {
-    window.location.href = '/auth/signup'
+{{!-- tagin --}}
+<script src="https://unpkg.com/tagin@2.0.2/dist/tagin.min.js"></script>
+<script>
+  const options = {
+    separator: ',', // default: ','
+    duplicate: false, // default: false
+    enter: true, // default: false
+    transform: 'input => input.toUpperCase()', // default: input => input
+    placeholder: 'Add a group...' // default: ''
+  }
+  const eles = document.querySelector('.tagin');
+  let tagin;
+  if(eles) {
+    tagin = new Tagin(document.querySelector('.tagin'), options);
   } 
-</script> --}}
+</script>
 </html>

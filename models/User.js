@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+        wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
         role: {
           type: String,
         },

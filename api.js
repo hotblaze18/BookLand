@@ -18,17 +18,24 @@ function buildResponse(response) {
   }));
 }
 
-module.exports.buildDatabaseResponse = (books) => {
+const buildDatabaseResponse = (books) => {
   // console.log(books[0]);
   return books.map((book) => ({
     id: book._id,
+    isbn: book.isbn,
     title: book.title,
     authors: book.author,
     pageCount: book.pages,
     image: book.coverImage,
-    published: book.publishDate
+    price: book.price,
+    publisher: book.publisher,
+    publishDate: book.publishDate,
+    language: book.language,
+    description: book.description
   }));
 }
+
+module.exports.buildDatabaseResponse = buildDatabaseResponse;
 
 module.exports.getBooks = async (query) => {
   const response = await axios.get(BASE_URL_VOLUMES, {

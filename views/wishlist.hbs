@@ -1,10 +1,9 @@
-<div class="container">
-  <div class="py-5">
-    <h2 class="font-weight-bold text-secondary">Inventory</h2>
-    <div class="row py-5">
-    {{#each favourites}}
+<div style="min-height: 70vh;" class="container py-5">
+  <h2 class="font-weight-bold text-secondary">Inventory</h2>
+  <div class="row py-5">
+    {{#each wishlist}}
       <div class="col col-sm-6 col-md-3 w-100 my-4" style="max-width: 300px;">
-        <div class="justify-content-center align-items-center">
+        <div class="flex justify-content-center align-items-center">
           <div style="width:150px;height:250px; margin:auto">
             <img src="{{this.image}}" style="width: 100%;height:80%" />
           </div>
@@ -13,18 +12,17 @@
           <h5 style="height: 38px;overflow:hidden" class="font-weight-bold">{{this.title}}</h5>
           <h6 style="height: 40px;overflow:hidden" class="text-secondary font-weight-bolder py-2">{{this.authors}}</h6>
           <div class="d-flex justify-content-between pt-4">
+            <h5 class="text-secondary">$ {{this.price}}</h5>
             <h5 class="text-secondary">{{this.pageCount}} pages</h5>
           </div>
         </div>
-        <div class="d-flex bg-secondary py-2 px-1 justify-content-between mt-2">
-          <a href="#"><button class="btn btn-warning">Buy Now</button></a>
-          <form method="POST" action="/wishlist/remove">
-            <input type="hidden" name="id" value="{{this.id}}" />
-            <button type="submit" class="btn btn-danger">Remove</button>
-          </form>
-        </div>
+        <form method="POST" action="/wishlist/remove" class="w-100 mt-3">
+          <input type="hidden" name="id" value="{{this.id}}" />
+          <button type="submit" class="btn btn-danger w-100">Remove From wishlist</button>
+        </form>
       </div>
+    {{else}}
+      <h1 style="margin: 250px auto;">No books in your wishlist</h1>
     {{/each}}
-  </div>
   </div>
 </div>

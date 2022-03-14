@@ -22,8 +22,35 @@
     </div>
 
     <div class="form-outline mb-4">
+      <label for="sel1">Language:</label>
+      <select name="language" class="form-control" id="sel1">
+        <option>English</option>
+        <option>Arabic</option>
+        <option>French</option>
+        <option>Spanish</option>
+        <option>German</option>
+        <option>Russian</option>
+      </select>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="date" name="publishDate" class="form-control form-control-lg" required/>
+      <label class="form-label">Publish Date</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="number" min="0" step="1" name="pages" class="form-control form-control-lg" required/>
+      <label class="form-label">Pages</label>
+    </div>
+
+    <div class="form-outline mb-4">
       <input type="text" name="publisher" class="form-control form-control-lg" required/>
       <label class="form-label">Publisher</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="text" name="genres" class="form-control tagin" data-separator=" "/>
+      <label class="form-label">Genres</label>
     </div>
 
     <div class="form-group">
@@ -32,7 +59,7 @@
     </div>
 
     <div class="form-group">
-      <label for="coverImage">Example file input</label>
+      <label for="coverImage">Book Cover</label>
       <input name="coverImage" type="file" class="form-control-file" id="coverImage" required>
     </div>
 

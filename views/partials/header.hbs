@@ -3,7 +3,11 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
     {{#if user}}
     <div style="justify-content: space-between;" class="collapse navbar-collapse" id="navbarColor02">      
-        <form method="GET" action="/books" id="searchForm" class="d-flex align-items-center form-inline my-2 my-lg-0 ml-3"> 
+        {{#if (eq user.role "admin")}}
+        <form method="GET" action="/admin/inventory/search" id="searchForm" class="d-flex align-items-center form-inline my-2 my-lg-0 ml-3"> 
+        {{else}}
+        <form method="GET" action="/books" id="searchForm" class="d-flex align-items-center form-inline my-2 my-lg-0 ml-3">
+        {{/if}}  
           <input name="search" style="width: 300px;" class="form-control mr-sm-2" type="text" placeholder="Search by title, author, publisher, description"> 
           <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> 
         <div style="cursor: pointer;position:relative" class="ml-3">
@@ -54,7 +58,7 @@
             <a class="btn bnt-link mr-2">
               <i class="fa fa-2x fa-mobile text-info" aria-hidden="true"></i>
             </a>
-            <a class="btn bnt-link mr-2">
+            <a href="/wishlist" class="btn bnt-link mr-2">
               <i style="font-size: 23px" class="fa fa-heart text-info" aria-hidden="true"></i>
             </a>
           {{/if}}
@@ -80,11 +84,5 @@
     } else {
       filterElement.classList.add('d-none');
     }
-  })
-
-  {{!-- const pageFilter = document.getElementById("pageFilter");
-  const priceFilter = document.getElementById("priceFilter");
-  const languageFilter = document.getElementById("languageFilter");
-
-  console.log(pageFilter.value); --}}
+  });
 </script>

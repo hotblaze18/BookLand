@@ -1,56 +1,84 @@
 <section class="py-5 container">
+  {{#each book}}
   <form action="/books/update" method="POST" enctype="multipart/form-data">
-    {{#if book}}
-    <input type="hidden" value="{{_id}}" />
+
+    <input name="id" type="hidden" value="{{this.id}}" />
+
     <div class="form-outline mb-4">
-      <input type="text" name="isbn" disabled value="{{isbn}}" class="form-control form-control-lg" required/>
+      <input type="text" name="isbn" value="{{this.isbn}}" class="form-control form-control-lg" disabled/>
       <label class="form-label">Isbn (must be unique)</label>
     </div>
 
     <div class="form-outline mb-4">
-      <input type="text" value="{{title}}" name="title" class="form-control form-control-lg" required/>
+      <input type="text" name="title" value="{{this.title}}" class="form-control form-control-lg" required/>
       <label class="form-label">Title</label>
     </div>
 
     <div class="form-outline mb-4">
-      <input type="text" name="authors" class="form-control form-control-lg" required/>
+      <input type="text" name="authors" value="{{this.authors}}" class="form-control form-control-lg" required/>
       <label class="form-label">Authors</label>
     </div>
 
     <div class="form-outline mb-4">
-      <input type="number" min="0" step="0.01" name="price" class="form-control form-control-lg" required/>
+      <input type="number" min="0" step="0.01" name="price" value="{{this.price}}" class="form-control form-control-lg" required/>
       <label class="form-label">Price</label>
     </div>
 
     <div class="form-outline mb-4">
-      <input type="text" name="publisher" class="form-control form-control-lg" required/>
+      <label for="sel1">Language:</label>
+      <select name="language" class="form-control" id="sel1">
+        <option id="English">English</option>
+        <option id="Arabic">Arabic</option>
+        <option id="French">French</option>
+        <option id="Spanish">Spanish</option>
+        <option id="German">German</option>
+        <option id="Russian">Russian</option>
+      </select>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input id="myDate" type="date" name="publishDate" class="form-control form-control-lg" required/>
+      <label class="form-label">Publish Date</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="number" min="0" step="1" name="pages" value="{{this.pageCount}}" class="form-control form-control-lg" required/>
+      <label class="form-label">Pages</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input type="text" name="publisher" value="{{this.publisher}}" class="form-control form-control-lg" required/>
       <label class="form-label">Publisher</label>
+    </div>
+
+    <div class="form-outline mb-4">
+      <input id="updateGenre" type="text" name="genres" value="{{genres}}" class="form-control tagin" data-separator=" "/>
+      <label class="form-label">Genres</label>
     </div>
 
     <div class="form-group">
       <label for="description">Description</label>
-      <textarea name="description" class="form-control" id="description" rows="3"></textarea>
+      <textarea name="description" class="form-control" id="description" rows="3">{{this.description}}</textarea>
     </div>
 
     <div class="form-group">
-      <label for="coverImage">Example file input</label>
-      <input name="coverImage" type="file" class="form-control-file" id="coverImage" required>
+      <label for="coverImage">Book Cover (leave empty if don't want to change)</label>
+      <input name="coverImage" type="file" class="form-control-file" id="coverImage">
     </div>
-
-    {{/if}}
 
     <!-- Submit button -->
     <input type="submit" value="Update" class="btn btn-primary btn-lg btn-block">
-
-    {{!-- <div class="divider d-flex align-items-center my-4">
-      <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
-    </div> --}}
-
-    {{!-- <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="#!" role="button">
-      <i class="fab fa-facebook-f me-2"></i>Continue with Facebook
-    </a>
-    <a class="btn btn-primary btn-lg btn-block" style="background-color: #55acee" href="#!" role="button">
-      <i class="fab fa-twitter me-2"></i>Continue with Twitter</a> --}}
-
+    {{/each}}
   </form>
+
+  <script>
+    const genres = "{{genres}}";
+    const language = "{{language}}"
+    document.getElementById('updateGenre').value = genres;
+    if(language) {
+      document.getElementById(language)?.setAttribute("selected", "true");
+    }
+    const publishDate = "{{publishDate}}"
+    document.getElementById("myDate").value = publishDate;
+  </script>
 </section>

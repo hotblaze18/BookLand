@@ -3,11 +3,13 @@ const router = express.Router();
 const User = require("../models/User");
 const { Routes, Messages } = require("../constants");
 const Book = require("../models/Book");
+const { buildDatabaseResponse } = require("../api");
 
 router.get('/', async (req, res) => {
   console.log(req.user);
   const { wishlist } = await User.findById(req.user._id).populate('wishlist');
-  res.render('wishlist', { user: req.user, wishlist, message: req.flash("message") });
+  console.log(wishlist);
+  res.render('wishlist', { user: req.user, wishlist: buildDatabaseResponse(wishlist), message: req.flash("message") });
 });
 
 router.post('/', async (req, res) => {

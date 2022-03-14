@@ -16,6 +16,7 @@ const passport = require("./passport/setup");
 const auth = require("./routes/auth");;
 const book = require('./routes/book');
 const admin = require('./routes/admin');
+const wishlist = require('./routes/wishlist');
 const { getRecomendedBooks } = require('./api');
 const hbshelpers = require('handlebars-helpers');
 const redirectIfNotLoggedIn = require('./middleware/redirectIfNotLogged');
@@ -25,11 +26,21 @@ const Book = require('./models/Book');
 const multihelpers = hbshelpers(['object', 'string']);
 const helpers = {
   eq: function(a, b, options){
+    console.log(a, b);
     if (a === b) {
       return true;
       }
     return false;
   },
+  containsId: function(a, b, options) {
+    if(!a || !b) {
+      return false;
+    }
+    const ele = a.find(b);
+    if(ele)
+      return true;
+    return false;
+  }
 }
 
 //setup view engine
@@ -108,6 +119,7 @@ mongoose.connect('mongodb+srv://bookland:bookland@cluster0.vwbxz.mongodb.net/myF
 app.use("/auth", auth);
 app.use('/books', redirectIfNotLoggedIn, book);
 app.use('/admin', redirectIfNotLoggedIn, checkIfAdmin, admin);
+app.use('/wishlist', redirectIfNotLoggedIn, wishlist);
 
 app.get('/', (req, res) => {
   const user = req.user;

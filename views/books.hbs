@@ -10,11 +10,24 @@
         <div style="height: 160px;background-color:#D4DFE4;" class="w-100 py-2 px-3 flex flex-column">
           <h5 style="height: 38px;overflow:hidden" class="font-weight-bold">{{this.title}}</h5>
           <h6 style="height: 40px;overflow:hidden" class="text-secondary font-weight-bolder py-2">{{this.authors}}</h6>
-          <div class="flex justify-content-between pt-4">
+          <div class="d-flex justify-content-between pt-4">
+            <h5 class="text-secondary">$ {{this.price}}</h5>
             <h5 class="text-secondary">{{this.pageCount}} pages</h5>
           </div>
         </div>
+        <div>
+          {{#if this.inWishlist}}
+          <a href="/wishlist"><button class="btn btn-primary w-100 mt-3">Already In Wishlist</button></a>
+          {{else}}
+            <form method="POST" action="/wishlist" class="w-100 mt-3">
+              <input type="hidden" name="id" value="{{this.id}}" />
+              <button type="submit" class="btn btn-secondary w-100">Add To Wishlist</button>
+            </form>
+          {{/if}}
+        </div>
       </div>
+    {{else}}
+      <h1 style="margin: 250px auto;">No Results</h1>
     {{/each}}
   </div>
 </div>
