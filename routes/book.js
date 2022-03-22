@@ -8,12 +8,12 @@ const Book = require("../models/Book");
 const { Routes, Messages } = require("../constants");
 const path = require('path');
 const { query } = require("express");
-const { isInWishlistIds } = require("../util");
+const { isInWishlistIds, getCartQuantiy } = require("../util");
 
 router.get('/', async (req, res) => {
   const { search, priceFilter, pageFilter, language } = req.query;
   let q = {};
-  if(priceFilter !== 'Any') {
+  if(priceFilter && priceFilter !== 'Any') {
     const priceRange = priceFilter.split('-');
     const l = parseInt(priceRange[0].slice(0, priceRange[0].length-1));
     let h = 1000000;
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     }
     q = { price: { $gt: l, $lt: h } };
   }
-  if(pageFilter !== 'Any') {
+  if(pageFilter && pageFilter !== 'Any') {
     const pageRange = pageFilter.split('-');
     const l = parseInt(pageRange[0]);
     let h = 100000;
@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
     }
     q = { ...q, pages: { $gt: l, $lt: h } };
   }
-  if(language !== 'Any') {
+  if(language && language !== 'Any') {
     q = { ...q, language }
   }
   console.log(q);
@@ -58,9 +58,11 @@ router.get('/', async (req, res) => {
   }
   books = buildDatabaseResponse(books);
   books.forEach((book) => {
+    //book.search = search;
     if(isInWishlistIds(req.user, book.id)) {
       book.inWishlist = true;
     }
+    book.quantity = getCartQuantiy(req.user, book.id);
   })
   res.render('books', { user: req.user, books, message: req.flash("message") });
 });

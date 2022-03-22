@@ -17,12 +17,14 @@ const auth = require("./routes/auth");;
 const book = require('./routes/book');
 const admin = require('./routes/admin');
 const wishlist = require('./routes/wishlist');
+const cart = require('./routes/cart');
 const { getRecomendedBooks } = require('./api');
 const hbshelpers = require('handlebars-helpers');
 const redirectIfNotLoggedIn = require('./middleware/redirectIfNotLogged');
 const checkIfAdmin = require('./middleware/checkIfAdmin');
 const { Routes } = require('./constants');
 const Book = require('./models/Book');
+
 const multihelpers = hbshelpers(['object', 'string']);
 const helpers = {
   eq: function(a, b, options){
@@ -58,7 +60,9 @@ app.set('view engine', 'hbs');
 app.use(express.json());
 app.use(bodyParser());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    origin: '*'
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
@@ -120,6 +124,7 @@ app.use("/auth", auth);
 app.use('/books', redirectIfNotLoggedIn, book);
 app.use('/admin', redirectIfNotLoggedIn, checkIfAdmin, admin);
 app.use('/wishlist', redirectIfNotLoggedIn, wishlist);
+app.use('/cart', redirectIfNotLoggedIn, cart);
 
 app.get('/', (req, res) => {
   const user = req.user;
@@ -131,7 +136,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/home', redirectIfNotLoggedIn,  async (req, res) => {
-  console.log(req.session.message, req.isAuthenticated());
+  console.log(req.user, req.isAuthenticated());
   
   const latestBooks = await getRecomendedBooks();
   console.log(latestBooks);

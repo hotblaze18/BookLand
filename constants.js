@@ -50,6 +50,14 @@ module.exports.Messages = {
     type: 'success',
     message: 'Succesfully removed from wishlist'
   },
+  addToCartSuccess: {
+    type: 'success',
+    message: 'Succesfully added to cart'
+  },
+  removeFromCartSuccess: {
+    type: 'success',
+    message: 'Succesfully removed from cart'
+  },
   error: {
     type: "error",
     message: "There was a problem. Please try again."

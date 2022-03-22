@@ -32,6 +32,10 @@ const UserSchema = new mongoose.Schema(
             required: true
         },
         wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+        cart: [{
+          book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: true },
+          quantity: { type: Number, default: 1 }
+        }],
         role: {
           type: String,
         },

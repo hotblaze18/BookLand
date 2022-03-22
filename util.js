@@ -6,3 +6,12 @@ module.exports.isInWishlistIds = (user, bookId) => {
   }
   return false;
 }
+
+module.exports.getCartQuantiy = (user, bookId) => {
+  const { cart } = user;
+  const found = cart !== undefined ? cart.find(({ book }) => book.equals(bookId)) : false;
+  if(found) {
+    return found.quantity;
+  }
+  return false;
+}

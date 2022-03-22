@@ -61,6 +61,9 @@
             <a href="/wishlist" class="btn bnt-link mr-2">
               <i style="font-size: 23px" class="fa fa-heart text-info" aria-hidden="true"></i>
             </a>
+            <div class="mr-2 btn">
+              <i style="font-size: 25px" class="fa fa-shopping-cart text-info"></i>
+            </div>
           {{/if}}
           <a href="/auth/logout" class="btn bnt-link">
             <i class="fa fa-2x fa-sign-out text-info" aria-hidden="true"></i>
@@ -85,4 +88,10 @@
       filterElement.classList.add('d-none');
     }
   });
+
+  (async () => {
+    const { cart } =  await fetch('http://localhost:3000/cart').then((res) => res.json());
+    console.log(cart);
+  })();  
+
 </script>
