@@ -29,13 +29,22 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/remove', async(req, res) => {
-  const { id } = req.body;
+  const { id, remove } = req.body;
   const { cart } = req.user;
   const item = cart.find((cartItem) => cartItem.book.equals(id));
-  if(item.quantity === 1) {
+
+  if(item === undefined) {
+    return res.status(400).json({ message: 'No Cart Item.' })
+  }
+
+  if(remove) {
     await User.findByIdAndUpdate(req.user._id, { $pull: { cart: { book: id } } });
   } else {
-    await User.updateOne({ '_id': req.user._id, 'cart.book': item.book }, { '$set': { 'cart.$.quantity': item.quantity - 1 } });
+    if(item.quantity === 1) {
+    await User.findByIdAndUpdate(req.user._id, { $pull: { cart: { book: id } } });
+    } else {
+      await User.updateOne({ '_id': req.user._id, 'cart.book': item.book }, { '$set': { 'cart.$.quantity': item.quantity - 1 } });
+    }
   }
   res.status(204).json({ message: Messages.removeFromCartSuccess });
 })

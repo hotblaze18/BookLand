@@ -61,8 +61,10 @@
             <a href="/wishlist" class="btn bnt-link mr-2">
               <i style="font-size: 23px" class="fa fa-heart text-info" aria-hidden="true"></i>
             </a>
-            <div class="mr-2 btn">
-              <i style="font-size: 25px" class="fa fa-shopping-cart text-info"></i>
+            <div style="position: relative" class="mr-2 btn">
+              <i id="cartIcon" style="font-size: 25px" class="fa fa-shopping-cart text-info"></i>
+              <div id="cart" class="d-none shadow" style="position: absolute; width: 500px; right:0; top:110%; padding: 16px 12px; background:rgb(224, 220, 220); z-index: 10; border-radius: 28px;">
+            </div>
             </div>
           {{/if}}
           <a href="/auth/logout" class="btn bnt-link">
@@ -78,7 +80,8 @@
     {{/if}}
 </nav>
 <script>
-
+  
+  //Filter Dom Actions
   const filterElement = document.getElementById("filter");
   const filterIcon = document.getElementById("filterIcon");
   filterIcon.addEventListener('click', () => {
@@ -89,9 +92,83 @@
     }
   });
 
+
+  //Cart Dom Actions
+  const cartElement = document.getElementById("cart");
+  const cartIcon = document.getElementById("cartIcon");
+  cartIcon.addEventListener('click', () => {
+    if(cartElement.classList.contains('d-none')) {
+      cartElement.classList.remove('d-none');
+    } else {
+      cartElement.classList.add('d-none');
+    }
+  });
+
   (async () => {
+
+    const cartDom = document.getElementById('cart');
+    cartDom.innerHTML = `<div style="padding: 50px 25px;">Loading...</div>`
     const { cart } =  await fetch('http://localhost:3000/cart').then((res) => res.json());
-    console.log(cart);
-  })();  
+    
+    
+    if(!cart || cart.length === 0) {
+      console.log('here');
+      console.log(cartDom);
+      cartDom.innerHTML = `<h1 style="padding: 200px 80px;">No items In your cart</h1>`;
+      return;
+    } 
+
+    let cartHtml = '';
+    let cartTotal = 0;
+    
+    cart.forEach((cartItem) => {
+      console.log(cartItem);
+      const id = cartItem.book._id;
+      const image = cartItem.book.coverImage;
+      const title = cartItem.book.title;
+      const author = cartItem.book.author;
+      const price = cartItem.book.price;
+      const quantity = cartItem.quantity;
+      cartTotal += price * quantity;
+
+      if(quantity > 0) {
+      cartHtml += `
+        <div style="display: flex; margin: 10px 0">
+          <img src=${image} style="width: 110px; height: auto;" />
+          <div style="margin-left: 12px; display:flex; flex-direction:column; justify-content: space-between;">
+            <div style="text-align: left">
+              <h3>${title}</h3>
+              <h4>${author}</h4>
+              <h5>$${price}</h5>
+              <h5>Quantity: ${quantity}</h5>
+            </div>
+            <div style="display: flex; margin-top: 8px">
+              <button class="btn btn-primary">Buy Now</button>
+              <button class="btn btn-danger ml-2" onclick="removeItemFromCart('${id}')">Remove</button>
+            </div>
+          </div>
+        </div>
+      `
+      }
+    });
+    cartHtml += `<h5 class="mt-4" style="text-align:center; font-weight: bold">Total: $${cartTotal}</h5>`;
+    cartHtml += `<button class="mt-3 btn btn-primary w-100">Proceed To Checkout</button>`;
+    cartDom.innerHTML = cartHtml;
+  })();
+
+  //Remove from cart api
+  const removeItemFromCart = async (bookId) => {
+  await fetch('http://localhost:3000/cart/remove', {
+    method: 'POST',
+    body: JSON.stringify({
+      id: bookId,
+      remove: true
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  });
+    //window.location.reload();
+  }  
 
 </script>
